@@ -1,3 +1,18 @@
+conda activate aqlm
+
+# 1) 补 torch 依赖
+pip install -U typing_extensions
+
+# 2) 避免 ~/.local 污染当前conda环境
+export PYTHONNOUSERSITE=1
+
+# 3) 把 nvshmem 动态库目录加到加载路径
+export LD_LIBRARY_PATH=/egr/research-seit/xl/miniconda3/envs/aqlm/lib/python3.10/site-packages/nvidia/nvshmem/lib:$LD_LIBRARY_PATH
+
+# 4) 验证
+python -c "import torch, transformers; print(torch.__version__, transformers.__version__)"
+
+
 # AQLM
 
 Official PyTorch implementation for [Extreme Compression of Large Language Models via Additive Quantization](https://arxiv.org/pdf/2401.06118.pdf)

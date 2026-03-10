@@ -48,6 +48,10 @@ def fit_kmeans(
     if devices is None:
         devices = [data.device]
 
+    # K-means cannot have more centroids than data points.
+    # Clamp k to keep tensor shapes consistent in both single- and multi-device paths.
+    k = min(k, data.shape[0])
+
     if greedy_init:
         clusters = _kmeans_greedy_init(data, k)
     else:

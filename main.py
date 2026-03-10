@@ -125,6 +125,11 @@ def get_inps(
             super().__init__()
             self.module = module
 
+        def __getattr__(self, name):
+            if name == "module":
+                return super().__getattr__(name)
+            return getattr(self.module, name)
+
         def forward(self, inp, **kwargs):
             inps[cache["i"] // nsamples_per_device][cache["i"] % nsamples_per_device] = inp
             cache["i"] += 1
@@ -675,7 +680,7 @@ def main():
     parser.add_argument(
         "--nbits_per_codebook",
         type=int,
-        default=16,
+        default=13,
         help="each codebook will contain 2 ** nbits_per_codebook vectors",
     )
     parser.add_argument(
